@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>House Price Prediction</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+        <script type="text/javascript">
+        	$(window).load(function() {
+			  
+			  console.log("document loaded" );
+			  
+			  $.get("{{ url_for('get_location_names') }}",
+			    function (data, status) {
+			      console.log("got response for get_location_names request");
+			      console.log(data)
+			      if(data) {
+			          var locations = data.locations;
+			          console.log(locations)
+			          var uiLocations = document.getElementById("uiLocations");
+			          $('#uiLocations').empty();
+			          for(var i in locations) {
+			              var opt = new Option(locations[i]);
+			              $('#uiLocations').append(opt);
+			          }
+			      }
+			  });
+
+			});
+			
+        </script>
+
+
+        <style>
+
+            body {
+                background-color:  #26d5db26;
+                text-align: center;
+                
+            }
+
+            .navbar {
+                background-color: #000000;
+            }
+
+            a {
+                color: #f7ff08;
+                text-align: center;
+            }
+
+            a:hover {
+                color: #ff0808;
+              }
+
+            .icon-bar {
+              position: fixed;
+              top: 50%;
+              -webkit-transform: translateY(-50%);
+              -ms-transform: translateY(-50%);
+              transform: translateY(-50%);
+            }
+
+            .icon-bar a{
+              display: block;
+              text-align: center;
+              padding: 16px;
+              transition: all 0.3s ease;
+              color: white;
+              font-size: 20px;
+            }
+
+            .icon-bar a:hover {
+              background-color: #000;
+            }
+
+            .github {
+              background: #000000;
+              color: white;
+            }
+
+            .linkedin {
+              background: #007bb5;
+              color: white;
+            }
+    	</style>
+
+    </head>
+
+    <body bgcolor=#85dcb>
+
+        <!-- As a heading -->
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+            <div class="navbar-header"></div>
+          </div>
+        </nav>
+        <br>
+        <center>
+
+            <h1 style="color:black;font-size:50px;">House Price Prediction</h1>
+            <div class="container">
+                <form action="\predict_home_price" method="POST" action="{{ url_for('predict_home_price') }}">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h2 class="card-title">Location</h2>
+                                    <div>
+                                        <select class="Location" name="Location" id="uiLocations" ></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br><br><br>
+
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h2 class="card-title">Area</h2>
+                                    <input type="number" name="Area" id="Area" required="required" placeholder="Enter Area"><br>
+                                    <h1 style="color:black;font-size:12px;">Eg: 1200, 2000</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h2 class="card-title">No. of Bedrooms</h2>
+                                    <input type="text" name="No. of Bedrooms" id="No. of Bedrooms" required="required" placeholder="Enter BHK Count"><br>
+                                    <h1 style="color:black;font-size:12px;">Eg: 2, 4</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">New/Resale</h2>
+                                    <select name="New/Resale" id="New/Resale" required="required" class="form-control">
+                                    <option value="1">New</option>
+                                    <option value="0">Resale</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">Gymnasium</h2>
+                                    <select name="Gymnasium" id="Gymnasium" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">Lift Available</h2>
+                                    <select name="Lift Available" id="Lift Available" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">Car Parking</h2>
+                                    <select name="Car Parking" id="Car Parking" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">Maintenance Staff</h2>
+                                    <select name="Maintenance Staff" id="Maintenance Staff" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">24x7 Security</h2>
+                                    <select name="24x7 Security" id="24x7 Security" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">Children's Play Area</h2>
+                                    <select name="Children's Play Area" id="Children's Play Area" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">Clubhouse</h2>
+                                    <select name="Clubhouse" id="Clubhouse" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">Intercom</h2>
+                                    <select name="Intercom" id="Intercom" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">Landscaped Gardens</h2>
+                                    <select name="Landscaped Gardens" id="Landscaped Gardens" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">Indoor Games</h2>
+                                    <select name="Indoor Games" id="Indoor Games" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">Gas Connection</h2>
+                                    <select name="Gas Connection" id="Gas Connection" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">Car Parking</h2>
+                                    <select name="Car Parking" id="Car Parking" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">Jogging Track</h2>
+                                    <select name="Jogging Track" id="Jogging Track" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                               <div class="card-body">
+                                    <h2 class="card-title">Swimming Pool</h2>
+                                    <select name="Swimming Pool" id="Swimming Pool" required="required" class="form-control">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <!-- Submit -->
+                    <button type="submit" value="Submit" class="btn btn-secondary">Estimate Price</button>
+                    <br><br>
+                </div>
+            </form>
+            <h2>{{ prediction_text }}</h2><br><br>
+        </center>
+        <p>© Amol Tambe</p>
+    </body>
+</html>
